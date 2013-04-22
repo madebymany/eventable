@@ -9,8 +9,8 @@ Currently tracking the 1.0.0 version of Backbone - I'll try to keep this updated
 
 ## Bower
 
-I've registered this as a bower package - just inclcude Eventable in your bower.json file and ''bower install''
+I've registered this as a bower package - just include Eventable in your ``bower.json`` file and ``bower install``
 
 ## Tests
 
-To run the tests just run ''npm test'' from the console
+To run the tests just run ``npm test`` from the console
