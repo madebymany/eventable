@@ -1,0 +1,12 @@
+{
+  "name": "Eventable",
+  "version": "1.0.0",
+  "main": "\"eventable.js",
+  "ignore": [
+    "test",
+    "components"
+  ],
+  "dependencies": {
+    "lodash": "1.2.0"
+  }
+}

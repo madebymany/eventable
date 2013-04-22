@@ -1,0 +1,14 @@
+.*
+*.custom.*
+*.d.ts
+*.md
+*.txt
+build.js
+index.js
+bower.json
+build
+doc
+node_modules
+perf
+test
+vendor
