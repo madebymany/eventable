@@ -8,6 +8,6 @@
     "test": "phantomjs test/vendor/runner.js test/index.html?noglobals=true"
   },
   "main"          : "eventable.js",
-  "version"       : "1.0.0",
+  "version"       : "1.0.2",
   "license"       : "MIT"
 }
