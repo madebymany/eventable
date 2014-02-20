@@ -1,0 +1,8 @@
+{
+  "name"          : "Eventable",
+  "description"   : "Events straight out of backbone",
+  "scripts"       : ["eventable.js"],
+  "main"          : "eventable.js",
+  "version"       : "1.0.2",
+  "license"       : "MIT"
+}
