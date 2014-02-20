@@ -1,4 +1,11 @@
-(function() {
+(function (root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    define(['underscore'], factory);
+  } else if (typeof exports === 'object') {
+    var _ = require("underscore");
+    module.exports = factory(_);
+  }
+}(this, function (_) {
 
   // Copy and pasted straight out of Backbone 1.0.0
   // We'll try and keep this updated to the latest
@@ -178,4 +185,5 @@
 
   this.Eventable = Eventable;
 
-})();
+  return Eventable;
+}));
