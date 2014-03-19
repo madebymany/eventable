@@ -2,8 +2,11 @@
   if (typeof define === 'function' && define.amd) {
     define(['underscore'], factory);
   } else if (typeof exports === 'object') {
-    var _ = require("underscore");
-    module.exports = factory(_);
+    var underscore = require("underscore");
+    module.exports = factory(underscore);
+  } else { 
+    // try to initialize it globally (like regular browser <script> link)
+    factory.call(root, _);
   }
 }(this, function (_) {
 
