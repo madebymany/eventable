@@ -1,7 +1,7 @@
 {
-  "name": "Eventable",
-  "version": "1.0.2",
-  "main": "\"eventable.js",
+  "name": "eventable",
+  "version": "1.0.3",
+  "main": "eventable.js",
   "ignore": [
     "test",
     "components"
