@@ -187,9 +187,6 @@
   Eventable.bind   = Eventable.on;
   Eventable.unbind = Eventable.off;
 
-  if (typeof define !== "undefined" && typeof define === "function" && define.amd) {
-    define( "eventable", [], function () { return Eventable; } );
-  }
-
   return Eventable;
+
 }));
