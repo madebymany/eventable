@@ -1,6 +1,7 @@
 {
   "name": "eventablejs",
   "version": "1.0.3",
+  "description": "The events part of Backbone",
   "license": "MIT",
   "main": "eventable.js",
   "repository": "madebymany/eventable",

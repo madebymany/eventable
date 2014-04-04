@@ -1,6 +1,7 @@
 {
   "name": "eventable",
   "version": "1.0.3",
+  "description": "The events part of Backbone",
   "main": "eventable.js",
   "ignore": [
     "test",
