@@ -7,8 +7,5 @@
     "eventable.js"
   ],
   "main": "eventable.js",
-  "repo": "https://github.com/madebymany/eventable",
-  "dependencies": {
-    "components/underscore": "*"
-  }
+  "repo": "https://github.com/madebymany/eventable"
 }
