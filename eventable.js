@@ -19,61 +19,19 @@
 
   var array = [];
   var slice = array.slice;
-  
-  // Borrowed methods from Underscore.js
-  var idCounter = 0;
-  
-  var _ = {
-    each: function(obj, iteratee, context) {
-      if (obj == null) return obj;
-      iteratee = createCallback(iteratee, context);
-      var i, length = obj.length;
-      if (length === +length) {
-        for (i = 0; i < length; i++) {
-          iteratee(obj[i], i, obj);
-        }
+
+  function once(func) {
+    var memo, times = 2;
+
+    return function() {
+      if (--times > 0) {
+        memo = func.apply(this, arguments);
       } else {
-        var keys = _.keys(obj);
-        for (i = 0, length = keys.length; i < length; i++) {
-          iteratee(obj[keys[i]], keys[i], obj);
-        }
+        func = null;
       }
-      return obj;
-    },
-    has: function(obj, key) {
-      return obj != null && hasOwnProperty.call(obj, key);
-    },
-    isObject: function(obj) {
-      var type = typeof obj;
-      return type === 'function' || type === 'object' && !!obj;
-    },
-    // Slightly modified. Removed native function call.
-    keys: function(obj) {
-      var type = typeof obj;
-      if (!_.isObject(obj)) return [];
-      
-      var keys = [];
-      for (var key in obj) if (_.has(obj, key)) keys.push(key);
-      return keys;
-    },
-    // Slightly modified from Underscore. The body of "before", but with "times" statically set inside.
-    once: function(func) {
-      var memo,
-          times = 2;
-      return function() {
-        if (--times > 0) {
-          memo = func.apply(this, arguments);
-        } else {
-          func = null;
-        }
-        return memo;
-      };
-    },
-    uniqueId: function() {
-      var id = ++idCounter + '';
-      return prefix ? prefix + id : id;
-    }
-  };
+      return memo;
+    };
+  }
 
   // Backbone.Events
   // ---------------
@@ -84,7 +42,7 @@
   // succession.
   //
   //     var object = {};
-  //     _.extend(object, Backbone.Events);
+  //     extend(object, Backbone.Events);
   //     object.on('expand', function(){ alert('expanded'); });
   //     object.trigger('expand');
   //
@@ -105,12 +63,12 @@
     once: function(name, callback, context) {
       if (!eventsApi(this, 'once', name, [callback, context]) || !callback) return this;
       var self = this;
-      var once = _.once(function() {
-        self.off(name, once);
+      var func = once(function() {
+        self.off(name, func);
         callback.apply(this, arguments);
       });
-      once._callback = callback;
-      return this.on(name, once, context);
+      func._callback = callback;
+      return this.on(name, func, context);
     },
 
     // Remove one or many callbacks. If `context` is null, removes all
@@ -125,7 +83,7 @@
         return this;
       }
 
-      names = name ? [name] : _.keys(this._events);
+      names = name ? [name] : Object.keys(this._events);
       for (i = 0, l = names.length; i < l; i++) {
         name = names[i];
         if (events = this._events[name]) {
@@ -226,16 +184,19 @@
   // Inversion-of-control versions of `on` and `once`. Tell *this* object to
   // listen to an event in another object ... keeping track of what it's
   // listening to.
-  _.each(listenMethods, function(implementation, method) {
+  function addListenMethod(method, implementation) {
     Eventable[method] = function(obj, name, callback) {
       var listeners = this._listeners || (this._listeners = {});
-      var id = obj._listenerId || (obj._listenerId = _.uniqueId('l'));
+      var id = obj._listenerId || (obj._listenerId = (new Date()).getTime());
       listeners[id] = obj;
       if (typeof name === 'object') callback = this;
       obj[implementation](name, callback, this);
       return this;
     };
-  });
+  }
+
+  addListenMethod('listenTo', 'on');
+  addListenMethod('listenToOnce', 'once');
 
   // Aliases for backwards compatibility.
   Eventable.bind   = Eventable.on;
