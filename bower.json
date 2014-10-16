@@ -6,8 +6,5 @@
   "ignore": [
     "test",
     "components"
-  ],
-  "dependencies": {
-    "underscore": "git://github.com/components/underscore.git#1.4.4"
-  }
+  ]
 }

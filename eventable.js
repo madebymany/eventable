@@ -1,25 +1,79 @@
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as a module.
-    define('eventable', ['underscore'], function(_) {
-      return (root.Eventable = factory(_));
+    define('eventable', function() {
+      return (root.Eventable = factory());
     });
   } else if (typeof exports !== 'undefined') {
     // Node. Does not work with strict CommonJS, but only CommonJS-like
     // enviroments that support module.exports, like Node.
-    var _ = require('underscore');
-    module.exports = factory(_);
+    module.exports = factory();
   } else {
     // Browser globals
-    root.Eventable = factory(root._);
+    root.Eventable = factory();
   }
-}(this, function(_) {
+}(this, function() {
 
   // Copy and pasted straight out of Backbone 1.0.0
   // We'll try and keep this updated to the latest
 
   var array = [];
   var slice = array.slice;
+  
+  // Borrowed methods from Underscore.js
+  var idCounter = 0;
+  
+  var _ = {
+    each: function(obj, iteratee, context) {
+      if (obj == null) return obj;
+      iteratee = createCallback(iteratee, context);
+      var i, length = obj.length;
+      if (length === +length) {
+        for (i = 0; i < length; i++) {
+          iteratee(obj[i], i, obj);
+        }
+      } else {
+        var keys = _.keys(obj);
+        for (i = 0, length = keys.length; i < length; i++) {
+          iteratee(obj[keys[i]], keys[i], obj);
+        }
+      }
+      return obj;
+    },
+    has: function(obj, key) {
+      return obj != null && hasOwnProperty.call(obj, key);
+    },
+    isObject: function(obj) {
+      var type = typeof obj;
+      return type === 'function' || type === 'object' && !!obj;
+    },
+    // Slightly modified. Removed native function call.
+    keys: function(obj) {
+      var type = typeof obj;
+      if (!_.isObject(obj)) return [];
+      
+      var keys = [];
+      for (var key in obj) if (_.has(obj, key)) keys.push(key);
+      return keys;
+    },
+    // Slightly modified from Underscore. The body of "before", but with "times" statically set inside.
+    once: function(func) {
+      var memo,
+          times = 2;
+      return function() {
+        if (--times > 0) {
+          memo = func.apply(this, arguments);
+        } else {
+          func = null;
+        }
+        return memo;
+      };
+    },
+    uniqueId: function() {
+      var id = ++idCounter + '';
+      return prefix ? prefix + id : id;
+    }
+  };
 
   // Backbone.Events
   // ---------------
